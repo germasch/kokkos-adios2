@@ -5,36 +5,6 @@
 
 int main(int argc, char** argv)
 {
-  static_assert(!adios2::detail::is_kokkos_view<std::vector<double>>::value,
-                "is_kokkos_view vector");
-  static_assert(adios2::detail::is_kokkos_view<Kokkos::View<double*>>::value,
-                "is_kokkos_view");
-  static_assert(adios2::ndarray_traits<std::vector<double>>::value, "vector");
-  static_assert(adios2::ndarray_traits<std::string>::value, "string");
-  static_assert(!adios2::ndarray_traits<std::iostream>::value, "iostream");
-  static_assert(!adios2::ndarray_traits<const double*>::value,
-                "const double *");
-  static_assert(
-    std::is_same<
-      adios2::ndarray_traits<const Kokkos::View<double*>>::value_type,
-      double>::value,
-    "value_type");
-
-  static_assert(
-    adios2::detail::memspace_kokkos_to_adios2<Kokkos::HostSpace>::value ==
-      adios2::MemorySpace::Host,
-    "mem host");
-
-  static_assert(adios2::ndarray_traits<Kokkos::View<double*>>::memory_space ==
-                  adios2::MemorySpace::Host,
-                "kokkos memspace");
-
-#ifdef KOKKOS_ENABLE_CUDA
-  static_assert(adios2::detail::memspace_kokkos_to_adios<CudaSpace>::value ==
-                  adios2::MemorySpace::CUDA,
-                "mem cuda");
-#endif
-
   constexpr std::size_t Nx = 6;
   Kokkos::ScopeGuard kokkos(argc, argv);
 
